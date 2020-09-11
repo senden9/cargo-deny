@@ -25,8 +25,12 @@ path = "src/cargo-deny/main.rs"
 
 [features]
 default = ["vendored-openssl"]
+# Allows the use of a vendored version openssl when compiling libgit, which allows
+# us to compile static executables (eg musl) and avoid system dependencies
 vendored-openssl = ["rustsec/vendored-openssl"]
-fix = ["cargo-edit"]
+# Allows the use of the fix subcommand, which can patch local crate manifests
+# to pull in patched versions of crates to fix vulnerabilities or other advisories
+fix = ["crates-index"]
 
 [dependencies]
 ansi_term = "0.12"
@@ -34,12 +38,11 @@ anyhow = "1.0"
 askalono = "0.4"
 atty = "0.2"
 bitvec = { version = "0.18", features = ["alloc"] }
-cargo-edit = { version = "0.6", features = ["upgrade"], optional = true }
 chrono = "0.4"
 clap = "2.33"
 codespan = { version = "0.9", features = ["reporting"] }
 codespan-reporting = "0.9"
-crates-index = { version = "0.15.2", path = "../rust-crates-index" }
+crates-index = { version = "0.15.2", optional = true, path = "../rust-crates-index" }
 crossbeam = "0.7"
 fern = "0.6"
 home = "0.5"
